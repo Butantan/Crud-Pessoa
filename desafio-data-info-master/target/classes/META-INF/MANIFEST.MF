@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: Desafio CronApp - Jecson Carvalho
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Paulo
+Implementation-Vendor-Id: com.crudSpringBootAngularJs
+Build-Jdk: 1.8.0_171
+Implementation-URL: http://projects.spring.io/spring-boot/desafioCRUD/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+

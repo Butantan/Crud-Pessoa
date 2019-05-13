@@ -1,0 +1,60 @@
+body {
+    margin: 50px 50px 50px 50px;
+    background-size:100% ;
+    background-attachment: fixed;
+    font-family: 'Roboto Condensed', sans-serif;
+
+}
+
+.add-button {
+     position: relative;
+     float: right;
+     margin: 20px 0px 20px 0px;
+ }
+ 
+ .espaco-buttom {
+    margin-top: 15px;
+    margin-bottom: 20px;
+ }
+
+.search-input {
+    margin: 20px 0px 20px 0px;
+    float: inherit;
+}
+
+.person-table{
+}
+
+.table_background {
+    background: white;
+}
+
+thead {
+    background: gray;
+    color: white;
+}
+
+.center-content {
+    text-align: center;
+}
+
+#cssTable td
+{
+    text-align:center;
+    vertical-align:middle;
+}
+
+.img-container {
+    display: block;
+    margin: 0 auto;
+    width: inherit;
+    height: 200px;
+}
+
+.img-container img {
+    max-height: 100%;
+    max-width: 100%;
+    border-radius: 5%;
+}
+
+

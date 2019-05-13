@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Desafio - Paulo Marcio</title>
+    <meta http-equiv="X-UA-Compatible"/>
+    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <script src="/js/script.js"></script>
+   	<script src="/js/ngMask.min.js"></script>
+    <!-- Biblioteca jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Declaração JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet"/>
+</head>
+<body ng-app="crudApp" ng-controller="RESTController" data-ng-init="listarPessoas()">
+
+<div class="wrap container">
+
+    <div class = "add-button">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addModal"><span class="glyphicon glyphicon-plus"></span> Adicionar Pessoa</button>
+    </div>
+
+    <div class="search-input">
+        <input class="form-control" ng-model="searchText" placeholder="Pesquisar"/>
+    </div>
+
+    <div class="table-responsive table_background panel panel-default">
+        <table class="table table-striped pessoa-table table-condensed">
+            <thead>
+            <tr>
+                <th>Primeiro Nome</th>
+                <th>Sobrenome</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>Ação</th>
+                <th>Situação</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in listaPessoa | filter: searchText">
+                <th>{{item.primeiroNome}}</th>
+                <th>{{item.sobrenome}}</th>
+                <th>{{item.cpf}}</th>
+                <th>{{item.telefone}}</th>
+                <th>
+                    <div class="btn-group">
+                        <button ng-click ="dataTransfer(item, $index)" class="btn btn-info" data-toggle="modal" data-target="#updateModal"><span class="glyphicon glyphicon-edit"></span> Atualizar</button>
+                        <button class="btn btn-danger" ng-click="deletarPessoa(item, $index)"><span class="glyphicon glyphicon-remove"></span> Deletar</button>
+                        <button ng-click = "dataTransfer(item, $index)" class="btn btn-success" data-toggle="modal" data-target="#viewModal"><span class="glyphicon glyphicon-user"></span> Visualizar</button>
+                    </div>
+                </th>
+                <th>
+                	<input type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled" />
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br/>
+</div>
+
+
+<div id="addModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Adicionar Pessoa</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <form ng-submit = "adicionarPessoa()">
+                        <p>Insira seu Primeiro Nome:</p>
+                        <input class="form-control " type="text" placeholder="Primeiro Nome" ng-model="primeiroNomeForm" required="required"/>
+                        <p>Insira o Sobrenome:</p>
+                        <input class="form-control " type="text" placeholder="Sobrenome" ng-model="sobrenomeForm" required="required"/>
+                        <p>Insira o E-mail</p>
+                        <input class="form-control " type="email" placeholder="E-mail" ng-model="emailForm" required="required"/>
+                        <p>Insira o CPF:</p>
+                        <input class="form-control " type="text" placeholder="CPF"  mask="999.999.999-99" ng-model="cpfForm"   required="required"/>
+                        <p>Insira o Telefone:</p>
+                        <input class="form-control " type="text" placeholder="Telefone" mask="(99) 99999-9999" ng-model="telefoneForm" required="required"/>
+                        <button class="btn btn-primary btn-lg btn-block espaco-buttom" type="submit">Adicionar</button>
+                    </form>
+                    <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="updateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Atualizar Pessoa</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <form ng-submit = "openUpdate($index)">
+                        <p>Insira seu Primeiro Nome:</p>
+                        <input class="form-control " type="text" ng-bind="" placeholder="Primeiro Nome" ng-model="updatedElement.primeiroNome" required="required"/>
+                        <p>Insira o Sobrenome:</p>
+                        <input class="form-control " type="text" placeholder="Sobrenome" ng-model="updatedElement.sobrenome" required="required"/>
+                        <p>Insira o E-mail:</p>
+                        <input class="form-control " type="email" placeholder="E-mail" ng-model="updatedElement.email"  required="required"/>
+                        <p>Insira o CPF:</p>
+                        <input class="form-control " type="text" placeholder="CPF" 	mask="999.999.999-99" ng-model="updatedElement.cpf" required="required"/>
+                        <p>Insira o Telefone:</p>
+                        <input class="form-control " type="text" placeholder="Telefone" mask="(99) 99999-9999" ng-model="updatedElement.telefone" required="required"/>
+                        <button class="btn btn-primary btn-lg btn-block espaco-buttom" type="submit">Atualizar</button>
+                    </form>
+                    <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="viewModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Detalhe Pessoa</h4>
+            </div>
+            <div class="modal-body">                
+                <div class="userBasicData">
+                    <div>
+                        <span class="users-info">Primeiro Nome:</span>
+                        <span ng-bind="updatedElement.primeiroNome"></span>
+                    </div>
+                    <div>
+                        <span class="users-info">Sobrenome:</span>
+                        <span ng-bind="updatedElement.sobrenome"></span>
+                    </div>
+                    <div>
+                        <span class="users-info">E-mail:</span>
+                        <span ng-bind="updatedElement.email"></span>
+                    </div>
+                </div>
+                    <div>
+                        <span class="users-info">CPF:</span>
+                        <span ng-bind="updatedElement.cpf"></span>
+                    </div>
+                    <div>
+                        <span class="users-info">Telefone:</span>
+                        <span ng-bind="updatedElement.telefone"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-lg btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
